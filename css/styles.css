@@ -923,6 +923,7 @@ h1, h2, h3 {
 .valuation-card {
   display: flex;
   flex-direction: column;
+  position: relative;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -1134,17 +1135,14 @@ h1, h2, h3 {
 }
 
 .value-reveal {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   background: rgba(0, 0, 0, 0.9);
   padding: 8px;
   text-align: center;
   font-size: 0.85rem;
   color: var(--accent-color);
   font-weight: 700;
-  z-index: 10;
+  border-radius: 0 0 8px 8px;
+  margin-top: auto;
 }
 
 /* ===== VALUATION RESULTS SCREEN ===== */
