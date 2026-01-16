@@ -177,40 +177,112 @@ const HighScores = {
 
   /**
    * Get all high scores
-   * @returns {Object} High scores by difficulty
+   * @returns {Object} High scores by game type and difficulty
    */
   getAll() {
     try {
       const stored = localStorage.getItem(this.storageKey);
-      return stored ? JSON.parse(stored) : {};
+      const scores = stored ? JSON.parse(stored) : {};
+
+      // Migrate old format if needed
+      return this.migrateScores(scores);
     } catch {
-      return {};
+      return { matching: {}, valuation: {} };
     }
   },
 
   /**
-   * Get high score for specific difficulty
-   * @param {number} cardCount - Difficulty level
+   * Migrate old score format to new multi-game format
+   * @param {Object} scores - Raw scores from localStorage
+   * @returns {Object} Migrated scores
+   */
+  migrateScores(scores) {
+    // Check if already in new format
+    if (scores.matching || scores.valuation) {
+      return scores;
+    }
+
+    // Old format: { "10": 15, "20": 32, "30": 58 }
+    // New format: { matching: { "10": 15, ... }, valuation: { ... } }
+    const migrated = {
+      matching: {},
+      valuation: {}
+    };
+
+    // Migrate numeric keys to matching
+    Object.keys(scores).forEach(key => {
+      if (!isNaN(key)) {
+        migrated.matching[key] = scores[key];
+      }
+    });
+
+    return migrated;
+  },
+
+  /**
+   * Get high score for specific game and difficulty
+   * @param {string} gameType - 'matching' or 'valuation' (or cardCount for backwards compat)
+   * @param {string|number} difficulty - Difficulty level or mode
    * @returns {number|null} High score or null
    */
-  get(cardCount) {
+  get(gameType, difficulty) {
+    // Backwards compatibility: get(cardCount)
+    if (typeof gameType === 'number' || !isNaN(gameType)) {
+      const scores = this.getAll();
+      return scores.matching?.[gameType] || null;
+    }
+
+    // New format: get('matching', 10) or get('valuation', '3-card')
     const scores = this.getAll();
-    return scores[cardCount] || null;
+    return scores[gameType]?.[difficulty] || null;
   },
 
   /**
    * Save new high score if better than existing
-   * @param {number} cardCount - Difficulty level
-   * @param {number} turns - Score to save
+   * @param {string} gameType - 'matching' or 'valuation' (or cardCount for backwards compat)
+   * @param {string|number} difficulty - Difficulty level or mode (or turns for backwards compat)
+   * @param {number} score - Score to save (optional for backwards compat)
    * @returns {boolean} True if new record
    */
-  save(cardCount, turns) {
-    const scores = this.getAll();
-    const currentBest = scores[cardCount];
+  save(gameType, difficulty, score) {
+    // Backwards compatibility: save(cardCount, turns)
+    if (typeof gameType === 'number' || !isNaN(gameType)) {
+      const cardCount = gameType;
+      const turns = difficulty;
+      const scores = this.getAll();
+      const currentBest = scores.matching?.[cardCount];
 
-    // Lower is better
-    if (!currentBest || turns < currentBest) {
-      scores[cardCount] = turns;
+      // Lower is better for matching
+      if (!currentBest || turns < currentBest) {
+        if (!scores.matching) scores.matching = {};
+        scores.matching[cardCount] = turns;
+        try {
+          localStorage.setItem(this.storageKey, JSON.stringify(scores));
+          return true;
+        } catch {
+          return false;
+        }
+      }
+      return false;
+    }
+
+    // New format: save('matching', 10, 15) or save('valuation', '3-card', 4)
+    const scores = this.getAll();
+    if (!scores[gameType]) scores[gameType] = {};
+
+    const currentBest = scores[gameType][difficulty];
+    let isNewRecord = false;
+
+    if (gameType === 'matching') {
+      // Lower is better for matching
+      isNewRecord = !currentBest || score < currentBest;
+    } else {
+      // Higher is better for valuation
+      isNewRecord = !currentBest || score > currentBest;
+    }
+
+    if (isNewRecord) {
+      scores[gameType][difficulty] = score;
       try {
         localStorage.setItem(this.storageKey, JSON.stringify(scores));
         return true;

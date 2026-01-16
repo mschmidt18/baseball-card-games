@@ -10,9 +10,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Menu Screen -->
-  <div id="menu-screen" class="screen active">
+  <!-- Game Selector Screen -->
+  <div id="game-selector-screen" class="screen active">
+    <div class="selector-container">
+      <h1 class="game-title">Vintage Baseball Card Games</h1>
+      <p class="game-subtitle">Choose your challenge</p>
+
+      <div class="game-selector-tiles">
+        <button class="game-tile" data-game="matching">
+          <div class="game-tile-icon">🃏</div>
+          <span class="game-tile-name">Matching</span>
+          <span class="game-tile-desc">Find the pairs</span>
+        </button>
+        <button class="game-tile" data-game="valuation">
+          <div class="game-tile-icon">💰</div>
+          <span class="game-tile-name">Valuation</span>
+          <span class="game-tile-desc">Know your values</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matching Menu Screen -->
+  <div id="menu-screen" class="screen">
     <div class="menu-container">
+      <button class="back-to-selector-btn" id="matching-back-btn">← Games</button>
       <h1 class="game-title">Vintage Baseball Card Match</h1>
       <p class="game-subtitle">Test your memory with the 30 most valuable cards of all time</p>
 
@@ -103,6 +125,135 @@
     </div>
   </div>
 
+  <!-- Valuation Menu Screen -->
+  <div id="valuation-menu-screen" class="screen">
+    <div class="menu-container">
+      <button class="back-to-selector-btn" id="valuation-back-btn">← Games</button>
+      <h1 class="game-title">Card Valuation</h1>
+      <p class="game-subtitle">Test your knowledge of card values</p>
+
+      <div class="difficulty-section">
+        <h2>Select Mode</h2>
+        <div class="mode-buttons">
+          <button class="mode-btn" data-mode="3-card">
+            <span class="mode-name">3-Card Sort</span>
+            <span class="mode-desc">Order 3 cards by value</span>
+          </button>
+          <button class="mode-btn" data-mode="2-card">
+            <span class="mode-name">2-Card Pick</span>
+            <span class="mode-desc">Pick the more valuable card</span>
+          </button>
+          <button class="mode-btn" data-mode="1-card">
+            <span class="mode-name">Value Guess</span>
+            <span class="mode-desc">Multiple choice values</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="high-scores-section">
+        <h3>High Scores</h3>
+        <div class="high-scores" id="valuation-high-scores">
+          <div class="score-item">
+            <span class="score-label">3-Card:</span>
+            <span class="score-value" id="high-score-3-card">--</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">2-Card:</span>
+            <span class="score-value" id="high-score-2-card">--</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">1-Card:</span>
+            <span class="score-value" id="high-score-1-card">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Valuation Game Screen -->
+  <div id="valuation-game-screen" class="screen">
+    <header class="game-header">
+      <button class="back-btn" id="valuation-game-back-btn">Menu</button>
+      <div class="score-display">
+        <span class="score-label">ROUND</span>
+        <span class="score-number" id="round-counter">1/5</span>
+      </div>
+      <div class="score-display">
+        <span class="score-label">CORRECT</span>
+        <span class="score-number" id="correct-counter">0</span>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="show-names-toggle" checked>
+        <span class="toggle-slider"></span>
+        <span class="toggle-label">Show Names</span>
+      </label>
+    </header>
+
+    <main class="valuation-main">
+      <!-- 3-Card Mode Layout -->
+      <div id="three-card-mode" class="valuation-mode">
+        <p class="instruction">Order cards from MOST to LEAST valuable</p>
+        <div class="card-selection-area" id="card-selection-area"></div>
+        <div class="position-slots" id="position-slots">
+          <div class="position-slot" data-position="0">
+            <span class="position-label">1st (Most)</span>
+            <div class="slot-content"></div>
+          </div>
+          <div class="position-slot" data-position="1">
+            <span class="position-label">2nd</span>
+            <div class="slot-content"></div>
+          </div>
+          <div class="position-slot" data-position="2">
+            <span class="position-label">3rd (Least)</span>
+            <div class="slot-content"></div>
+          </div>
+        </div>
+        <button class="submit-btn" id="submit-order-btn" disabled>Submit Order</button>
+      </div>
+
+      <!-- 2-Card Mode Layout -->
+      <div id="two-card-mode" class="valuation-mode" style="display: none;">
+        <p class="instruction">Click the MORE valuable card</p>
+        <div class="two-card-area" id="two-card-area"></div>
+      </div>
+
+      <!-- 1-Card Mode Layout -->
+      <div id="one-card-mode" class="valuation-mode" style="display: none;">
+        <p class="instruction">What is this card's estimated value?</p>
+        <div class="single-card-area" id="single-card-area"></div>
+        <div class="value-options" id="value-options"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Valuation Results Screen -->
+  <div id="valuation-results-screen" class="screen">
+    <div class="victory-container">
+      <div class="trophy-icon" id="valuation-trophy">🏆</div>
+      <h2 class="victory-title">Game Complete!</h2>
+
+      <div class="final-score">
+        <span class="final-score-label">Final Score</span>
+        <span class="final-score-number" id="valuation-final-score">0/5</span>
+        <span class="final-score-unit">correct</span>
+      </div>
+
+      <div class="new-record" id="valuation-new-record" style="display: none;">
+        <span>New High Score!</span>
+      </div>
+
+      <div class="matched-cards-section">
+        <h3>Round Summary</h3>
+        <div class="round-summary-list" id="round-summary-list"></div>
+      </div>
+
+      <div class="victory-buttons">
+        <button class="play-again-btn" id="valuation-play-again-btn">Play Again</button>
+        <button class="change-difficulty-btn" id="valuation-change-mode-btn">Change Mode</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Card Info Modal -->
   <div id="card-info-modal" class="modal">
     <div class="modal-content">
@@ -119,6 +270,7 @@
 
   <script src="js/cards.js"></script>
   <script src="js/game.js"></script>
+  <script src="js/valuation.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
 </body>

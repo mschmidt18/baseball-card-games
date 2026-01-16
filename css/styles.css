@@ -686,3 +686,545 @@ h1, h2, h3 {
     border-color: var(--accent-color);
   }
 }
+
+/* ===== GAME SELECTOR SCREEN ===== */
+
+#game-selector-screen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--surface-color) 100%);
+}
+
+.selector-container {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.game-selector-tiles {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.game-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 30px;
+  background: var(--surface-color);
+  border: 3px solid var(--primary-color);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  color: inherit;
+}
+
+.game-tile:hover {
+  background: var(--primary-color);
+  border-color: var(--accent-color);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.game-tile-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.game-tile-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'Playfair Display', serif;
+}
+
+.game-tile-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+@media (min-width: 768px) {
+  .game-selector-tiles {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .game-tile {
+    flex: 1;
+    max-width: 250px;
+  }
+}
+
+/* Back to selector buttons */
+.back-to-selector-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  margin-bottom: 20px;
+  transition: color 0.2s ease;
+  font-family: inherit;
+}
+
+.back-to-selector-btn:hover {
+  color: var(--accent-color);
+}
+
+/* ===== VALUATION MENU SCREEN ===== */
+
+#valuation-menu-screen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--surface-color) 100%);
+}
+
+.mode-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  color: inherit;
+  text-align: center;
+}
+
+.mode-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mode-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+}
+
+.mode-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+@media (min-width: 768px) {
+  .mode-buttons {
+    flex-direction: row;
+  }
+
+  .mode-btn {
+    flex: 1;
+  }
+}
+
+/* ===== VALUATION GAME SCREEN ===== */
+
+#valuation-game-screen {
+  flex-direction: column;
+  background: var(--background-color);
+}
+
+.valuation-main {
+  padding-top: calc(var(--header-height) + 20px);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.valuation-mode {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.instruction {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.toggle-slider {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: var(--text-secondary);
+  border-radius: 12px;
+  transition: background 0.3s ease;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: white;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--accent-color);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+.toggle-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Valuation Cards */
+.valuation-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.valuation-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-name-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 6px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* 3-Card Mode */
+.card-selection-area {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.selectable-card {
+  width: 120px;
+  height: 168px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.selectable-card:hover {
+  transform: scale(1.05);
+  border-color: var(--primary-light);
+}
+
+.selectable-card.selected {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 20px rgba(255, 213, 79, 0.5);
+  transform: scale(1.05);
+}
+
+.selectable-card.placed {
+  opacity: 0.4;
+}
+
+.position-slots {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.position-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.position-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.slot-content {
+  width: 130px;
+  height: 182px;
+  border: 2px dashed var(--text-secondary);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: rgba(22, 27, 34, 0.5);
+}
+
+.slot-content:hover {
+  border-color: var(--accent-color);
+  background: rgba(255, 213, 79, 0.1);
+}
+
+.slot-content .valuation-card {
+  width: 120px;
+  height: 168px;
+}
+
+.submit-btn {
+  padding: 15px 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--accent-color);
+  border: none;
+  border-radius: 8px;
+  color: var(--primary-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  align-self: center;
+  margin-top: 10px;
+}
+
+.submit-btn:disabled {
+  background: var(--text-secondary);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.submit-btn:not(:disabled):hover {
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 213, 79, 0.3);
+}
+
+/* 2-Card Mode */
+.two-card-area {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.two-card-choice {
+  width: 160px;
+  height: 224px;
+}
+
+/* 1-Card Mode */
+.single-card-area {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.display-card {
+  width: 200px;
+  height: 280px;
+}
+
+.value-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 350px;
+  align-items: center;
+}
+
+.value-option-btn {
+  padding: 18px 25px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+  max-width: 350px;
+}
+
+.value-option-btn:hover {
+  background: var(--primary-color);
+  border-color: var(--accent-color);
+}
+
+/* Answer Reveal States */
+.answer-correct {
+  border-color: var(--success-color) !important;
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.5) !important;
+}
+
+.answer-incorrect {
+  border-color: #f44336 !important;
+  box-shadow: 0 0 20px rgba(244, 67, 54, 0.5) !important;
+}
+
+.value-reveal {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 8px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--accent-color);
+  font-weight: 700;
+  z-index: 10;
+}
+
+/* ===== VALUATION RESULTS SCREEN ===== */
+
+#valuation-results-screen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--surface-color) 100%);
+  overflow-y: auto;
+}
+
+.round-summary-list {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.round-summary-item {
+  padding: 15px;
+  background: var(--surface-color);
+  border-radius: 8px;
+  border-left: 4px solid var(--text-secondary);
+}
+
+.round-summary-item.correct {
+  border-left-color: var(--success-color);
+}
+
+.round-summary-item.incorrect {
+  border-left-color: #f44336;
+}
+
+.round-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.round-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.round-cards span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+
+@media (max-width: 480px) {
+  .selectable-card {
+    width: 100px;
+    height: 140px;
+  }
+
+  .two-card-choice {
+    width: 130px;
+    height: 182px;
+  }
+
+  .display-card {
+    width: 160px;
+    height: 224px;
+  }
+
+  .position-slots {
+    gap: 10px;
+  }
+
+  .slot-content {
+    width: 110px;
+    height: 154px;
+  }
+
+  .slot-content .valuation-card {
+    width: 100px;
+    height: 140px;
+  }
+
+  .game-tile {
+    padding: 30px 20px;
+  }
+
+  .game-tile-icon {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .two-card-area {
+    gap: 60px;
+  }
+}
