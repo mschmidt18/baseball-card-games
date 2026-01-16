@@ -115,32 +115,39 @@ const Cards = {
     const sorted = this.sortByValue(this.allCards, true);
     const cardIndex = sorted.findIndex(c => c.id === cardId);
 
+    // Build pool of candidates from +/- 3 positions (excluding the card itself)
+    const candidatePool = [];
     const uniqueValues = new Set([card.estimatedValue]);
-    const options = [card.estimatedValue];
 
-    // Collect unique values by searching up and down from card position
-    let offset = 1;
-    while (uniqueValues.size < 3 && offset < sorted.length) {
-      // Try below (higher index = lower value)
+    for (let offset = 1; offset <= 3; offset++) {
+      // Cards below (higher index = lower value)
       if (cardIndex + offset < sorted.length) {
-        const lowerValue = sorted[cardIndex + offset].estimatedValue;
-        if (!uniqueValues.has(lowerValue)) {
-          uniqueValues.add(lowerValue);
-          options.push(lowerValue);
+        const lowerCard = sorted[cardIndex + offset];
+        if (!uniqueValues.has(lowerCard.estimatedValue)) {
+          candidatePool.push(lowerCard);
+          uniqueValues.add(lowerCard.estimatedValue);
         }
       }
 
-      // Try above (lower index = higher value)
-      if (uniqueValues.size < 3 && cardIndex - offset >= 0) {
-        const higherValue = sorted[cardIndex - offset].estimatedValue;
-        if (!uniqueValues.has(higherValue)) {
-          uniqueValues.add(higherValue);
-          options.push(higherValue);
+      // Cards above (lower index = higher value)
+      if (cardIndex - offset >= 0) {
+        const higherCard = sorted[cardIndex - offset];
+        if (!uniqueValues.has(higherCard.estimatedValue)) {
+          candidatePool.push(higherCard);
+          uniqueValues.add(higherCard.estimatedValue);
         }
       }
-
-      offset++;
     }
+
+    // Randomly select 2 cards from the pool
+    const shuffled = [...candidatePool].sort(() => Math.random() - 0.5);
+    const selectedCards = shuffled.slice(0, 2);
+
+    // Combine with correct answer
+    const options = [
+      card.estimatedValue,
+      ...selectedCards.map(c => c.estimatedValue)
+    ];
 
     // Sort options in ascending order (low to high)
     return options.sort((a, b) => {
