@@ -921,7 +921,8 @@ h1, h2, h3 {
 
 /* Valuation Cards */
 .valuation-card {
-  position: relative;
+  display: flex;
+  flex-direction: column;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -929,23 +930,42 @@ h1, h2, h3 {
 
 .valuation-card img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   display: block;
+  border-radius: 8px 8px 0 0;
 }
 
 .card-name-label {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   background: rgba(0, 0, 0, 0.85);
-  padding: 6px;
+  padding: 8px 6px;
   text-align: center;
   font-size: 0.75rem;
   color: var(--text-primary);
   font-weight: 500;
   line-height: 1.2;
+  border-radius: 0 0 8px 8px;
+}
+
+.card-name-line {
+  line-height: 1.3;
+}
+
+.card-name-line.player {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.card-name-line.set {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 2px;
+}
+
+.card-name-line.grade {
+  font-size: 0.75rem;
+  color: var(--accent-color);
+  font-weight: 600;
 }
 
 /* 3-Card Mode */
@@ -959,7 +979,6 @@ h1, h2, h3 {
 
 .selectable-card {
   width: 120px;
-  height: 168px;
   cursor: pointer;
   border: 3px solid transparent;
   transition: all 0.2s ease;
@@ -1003,7 +1022,7 @@ h1, h2, h3 {
 
 .slot-content {
   width: 130px;
-  height: 182px;
+  min-height: 182px;
   border: 2px dashed var(--text-secondary);
   border-radius: 8px;
   display: flex;
@@ -1021,7 +1040,6 @@ h1, h2, h3 {
 
 .slot-content .valuation-card {
   width: 120px;
-  height: 168px;
 }
 
 .submit-btn {
@@ -1061,7 +1079,6 @@ h1, h2, h3 {
 
 .two-card-choice {
   width: 160px;
-  height: 224px;
 }
 
 /* 1-Card Mode */
@@ -1074,7 +1091,6 @@ h1, h2, h3 {
 
 .display-card {
   width: 200px;
-  height: 280px;
 }
 
 .value-options {
@@ -1187,17 +1203,14 @@ h1, h2, h3 {
 @media (max-width: 480px) {
   .selectable-card {
     width: 100px;
-    height: 140px;
   }
 
   .two-card-choice {
     width: 130px;
-    height: 182px;
   }
 
   .display-card {
     width: 160px;
-    height: 224px;
   }
 
   .position-slots {
@@ -1206,12 +1219,11 @@ h1, h2, h3 {
 
   .slot-content {
     width: 110px;
-    height: 154px;
+    min-height: 154px;
   }
 
   .slot-content .valuation-card {
     width: 100px;
-    height: 140px;
   }
 
   .game-tile {

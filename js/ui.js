@@ -273,14 +273,14 @@ const UI = {
 
     const img = document.createElement('img');
     img.src = `images/cards/${card.imageFile}`;
-    img.alt = Cards.formatCardName(card);
+    img.alt = Cards.formatCardNamePlain(card);
 
     cardDiv.appendChild(img);
 
     if (showName) {
       const nameLabel = document.createElement('div');
       nameLabel.className = 'card-name-label';
-      nameLabel.textContent = Cards.formatCardName(card);
+      nameLabel.innerHTML = Cards.formatCardName(card);
       cardDiv.appendChild(nameLabel);
     }
 
@@ -490,7 +490,7 @@ const UI = {
       cardsInfo.className = 'round-cards';
       round.cards.forEach(card => {
         const cardSpan = document.createElement('span');
-        cardSpan.textContent = `${Cards.formatCardName(card)} - ${card.estimatedValue}`;
+        cardSpan.textContent = `${Cards.formatCardNamePlain(card)} - ${card.estimatedValue}`;
         cardsInfo.appendChild(cardSpan);
       });
 

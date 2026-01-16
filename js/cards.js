@@ -160,9 +160,18 @@ const Cards = {
   /**
    * Format card name for display
    * @param {Object} card - Card object
-   * @returns {string} Formatted name like "Honus Wagner (1909 T206)"
+   * @returns {string} Formatted HTML with 3 lines: player name, set, grade
    */
   formatCardName(card) {
-    return `${card.playerName} (${card.year} ${card.cardSet})`;
+    return `<div class="card-name-line player">${card.playerName}</div><div class="card-name-line set">${card.year} ${card.cardSet}</div><div class="card-name-line grade">${card.grade}</div>`;
+  },
+
+  /**
+   * Format card name as plain text (for summaries, alt text, etc.)
+   * @param {Object} card - Card object
+   * @returns {string} Plain text name
+   */
+  formatCardNamePlain(card) {
+    return `${card.playerName} (${card.year} ${card.cardSet}) ${card.grade}`;
   }
 };
