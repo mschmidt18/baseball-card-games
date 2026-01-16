@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vintage Baseball Card Match</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Menu Screen -->
+  <div id="menu-screen" class="screen active">
+    <div class="menu-container">
+      <h1 class="game-title">Vintage Baseball Card Match</h1>
+      <p class="game-subtitle">Test your memory with the 30 most valuable cards of all time</p>
+
+      <div class="difficulty-section">
+        <h2>Select Difficulty</h2>
+        <div class="difficulty-buttons">
+          <button class="difficulty-btn" data-cards="10">
+            <span class="card-count">10 Cards</span>
+            <span class="tile-count">20 Tiles</span>
+            <span class="difficulty-label">Easy</span>
+          </button>
+          <button class="difficulty-btn" data-cards="20">
+            <span class="card-count">20 Cards</span>
+            <span class="tile-count">40 Tiles</span>
+            <span class="difficulty-label">Medium</span>
+          </button>
+          <button class="difficulty-btn" data-cards="30">
+            <span class="card-count">30 Cards</span>
+            <span class="tile-count">60 Tiles</span>
+            <span class="difficulty-label">Expert</span>
+          </button>
+        </div>
+        <p class="mobile-hint" id="mobile-hint"></p>
+      </div>
+
+      <div class="high-scores-section">
+        <h3>High Scores</h3>
+        <div class="high-scores" id="high-scores">
+          <div class="score-item">
+            <span class="score-label">Easy:</span>
+            <span class="score-value" id="high-score-10">--</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Medium:</span>
+            <span class="score-value" id="high-score-20">--</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Expert:</span>
+            <span class="score-value" id="high-score-30">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <header class="game-header">
+      <button class="back-btn" id="back-btn">Menu</button>
+      <div class="score-display">
+        <span class="score-label">TURNS</span>
+        <span class="score-number" id="turn-counter">0</span>
+      </div>
+      <button class="restart-btn" id="restart-btn">Restart</button>
+    </header>
+
+    <main class="game-main">
+      <div class="game-board" id="game-board"></div>
+    </main>
+  </div>
+
+  <!-- Victory Screen -->
+  <div id="victory-screen" class="screen">
+    <div class="victory-container">
+      <div class="trophy-icon">&#127942;</div>
+      <h2 class="victory-title">Congratulations!</h2>
+      <p class="victory-message">You matched all the cards!</p>
+
+      <div class="final-score">
+        <span class="final-score-label">Final Score</span>
+        <span class="final-score-number" id="final-score">0</span>
+        <span class="final-score-unit">turns</span>
+      </div>
+
+      <div class="new-record" id="new-record" style="display: none;">
+        <span>New High Score!</span>
+      </div>
+
+      <div class="matched-cards-section">
+        <h3>Cards Matched</h3>
+        <div class="matched-cards-list" id="matched-cards-list"></div>
+      </div>
+
+      <div class="victory-buttons">
+        <button class="play-again-btn" id="play-again-btn">Play Again</button>
+        <button class="change-difficulty-btn" id="change-difficulty-btn">Change Difficulty</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Info Modal -->
+  <div id="card-info-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <img class="modal-card-image" id="modal-card-image" src="" alt="">
+      <div class="modal-card-info">
+        <h3 id="modal-player-name"></h3>
+        <p class="modal-card-set" id="modal-card-set"></p>
+        <p class="modal-card-value" id="modal-card-value"></p>
+        <p class="modal-card-desc" id="modal-card-desc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/cards.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

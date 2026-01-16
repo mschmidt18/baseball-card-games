@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 350">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B0000;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#A52A2A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B0000;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="diamonds" patternUnits="userSpaceOnUse" width="20" height="20">
+      <rect width="20" height="20" fill="transparent"/>
+      <polygon points="10,0 20,10 10,20 0,10" fill="#6B0000" opacity="0.3"/>
+    </pattern>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4AF37"/>
+      <stop offset="50%" style="stop-color:#FFD700"/>
+      <stop offset="100%" style="stop-color:#D4AF37"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Main background -->
+  <rect width="250" height="350" fill="url(#bgGrad)"/>
+
+  <!-- Diamond pattern overlay -->
+  <rect width="250" height="350" fill="url(#diamonds)"/>
+
+  <!-- Ornate border -->
+  <rect x="8" y="8" width="234" height="334" fill="none" stroke="url(#goldGrad)" stroke-width="3" rx="8"/>
+  <rect x="15" y="15" width="220" height="320" fill="none" stroke="url(#goldGrad)" stroke-width="1" rx="6"/>
+
+  <!-- Corner ornaments -->
+  <g fill="url(#goldGrad)">
+    <!-- Top left -->
+    <circle cx="25" cy="25" r="6"/>
+    <circle cx="25" cy="25" r="3" fill="#8B0000"/>
+    <!-- Top right -->
+    <circle cx="225" cy="25" r="6"/>
+    <circle cx="225" cy="25" r="3" fill="#8B0000"/>
+    <!-- Bottom left -->
+    <circle cx="25" cy="325" r="6"/>
+    <circle cx="25" cy="325" r="3" fill="#8B0000"/>
+    <!-- Bottom right -->
+    <circle cx="225" cy="325" r="6"/>
+    <circle cx="225" cy="325" r="3" fill="#8B0000"/>
+  </g>
+
+  <!-- Center design - baseball -->
+  <g transform="translate(125, 175)">
+    <!-- Baseball circle -->
+    <circle cx="0" cy="0" r="50" fill="#FFFEF0" stroke="url(#goldGrad)" stroke-width="2"/>
+
+    <!-- Baseball stitches -->
+    <path d="M -35 -35 Q -45 0 -35 35" fill="none" stroke="#CC0000" stroke-width="2"/>
+    <path d="M 35 -35 Q 45 0 35 35" fill="none" stroke="#CC0000" stroke-width="2"/>
+
+    <!-- Stitch marks left -->
+    <g stroke="#CC0000" stroke-width="1.5">
+      <line x1="-38" y1="-30" x2="-32" y2="-28"/>
+      <line x1="-42" y1="-20" x2="-35" y2="-18"/>
+      <line x1="-44" y1="-10" x2="-37" y2="-8"/>
+      <line x1="-45" y1="0" x2="-38" y2="0"/>
+      <line x1="-44" y1="10" x2="-37" y2="8"/>
+      <line x1="-42" y1="20" x2="-35" y2="18"/>
+      <line x1="-38" y1="30" x2="-32" y2="28"/>
+    </g>
+
+    <!-- Stitch marks right -->
+    <g stroke="#CC0000" stroke-width="1.5">
+      <line x1="38" y1="-30" x2="32" y2="-28"/>
+      <line x1="42" y1="-20" x2="35" y2="-18"/>
+      <line x1="44" y1="-10" x2="37" y2="-8"/>
+      <line x1="45" y1="0" x2="38" y2="0"/>
+      <line x1="44" y1="10" x2="37" y2="8"/>
+      <line x1="42" y1="20" x2="35" y2="18"/>
+      <line x1="38" y1="30" x2="32" y2="28"/>
+    </g>
+  </g>
+
+  <!-- Title text -->
+  <text x="125" y="70" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="url(#goldGrad)">VINTAGE</text>
+  <text x="125" y="92" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="url(#goldGrad)">BASEBALL</text>
+  <text x="125" y="110" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="url(#goldGrad)">CARDS</text>
+
+  <!-- Bottom text -->
+  <text x="125" y="290" text-anchor="middle" font-family="Georgia, serif" font-size="12" fill="url(#goldGrad)">MATCH GAME</text>
+  <text x="125" y="308" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#D4AF37">EST. 2025</text>
+
+  <!-- Decorative lines -->
+  <line x1="50" y1="120" x2="200" y2="120" stroke="url(#goldGrad)" stroke-width="1"/>
+  <line x1="50" y1="275" x2="200" y2="275" stroke="url(#goldGrad)" stroke-width="1"/>
+</svg>
