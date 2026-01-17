@@ -11,6 +11,9 @@ const UI = {
     valuationMenuScreen: null,
     valuationGameScreen: null,
     valuationResultsScreen: null,
+    guessMenuScreen: null,
+    guessGameScreen: null,
+    guessResultsScreen: null,
     gameBoard: null,
     turnCounter: null,
     modalOverlay: null
@@ -27,6 +30,9 @@ const UI = {
     this.elements.valuationMenuScreen = document.getElementById('valuation-menu-screen');
     this.elements.valuationGameScreen = document.getElementById('valuation-game-screen');
     this.elements.valuationResultsScreen = document.getElementById('valuation-results-screen');
+    this.elements.guessMenuScreen = document.getElementById('guess-menu-screen');
+    this.elements.guessGameScreen = document.getElementById('guess-game-screen');
+    this.elements.guessResultsScreen = document.getElementById('guess-results-screen');
     this.elements.gameBoard = document.getElementById('game-board');
     this.elements.turnCounter = document.getElementById('turn-counter');
     this.elements.modalOverlay = document.getElementById('card-info-modal');
@@ -40,7 +46,8 @@ const UI = {
     // Hide all screens
     const screens = [
       'gameSelectorScreen', 'menuScreen', 'gameScreen', 'victoryScreen',
-      'valuationMenuScreen', 'valuationGameScreen', 'valuationResultsScreen'
+      'valuationMenuScreen', 'valuationGameScreen', 'valuationResultsScreen',
+      'guessMenuScreen', 'guessGameScreen', 'guessResultsScreen'
     ];
     screens.forEach(screen => {
       if (this.elements[screen]) {
@@ -70,6 +77,15 @@ const UI = {
         break;
       case 'valuation-results':
         this.elements.valuationResultsScreen.classList.add('active');
+        break;
+      case 'guess-menu':
+        this.elements.guessMenuScreen.classList.add('active');
+        break;
+      case 'guess-game':
+        this.elements.guessGameScreen.classList.add('active');
+        break;
+      case 'guess-results':
+        this.elements.guessResultsScreen.classList.add('active');
         break;
     }
   },
@@ -522,5 +538,267 @@ const UI = {
     document.querySelectorAll('.card-name-label').forEach(label => {
       label.style.display = showNames ? 'block' : 'none';
     });
+  },
+
+  // ===== GUESS GAME METHODS =====
+
+  /**
+   * Render a new round for the guess game
+   * @param {Object} roundData - Round data with card and blur amount
+   */
+  renderGuessRound(roundData) {
+    const { card, round, blurAmount, attemptsRemaining } = roundData;
+
+    const cardImage = document.getElementById('guess-card-image');
+
+    // Hide image during transition to prevent flash
+    cardImage.style.opacity = '0';
+
+    // Remove revealed class and set blur BEFORE loading image
+    cardImage.classList.remove('revealed');
+    cardImage.style.filter = `blur(${blurAmount}px)`;
+
+    const newImageSrc = `images/cards/${card.imageFile}`;
+
+    // If it's the same image, just show it
+    if (cardImage.src.endsWith(card.imageFile)) {
+      cardImage.style.opacity = '1';
+    } else {
+      // Preload the image completely before swapping src
+      const preloadImg = new Image();
+      preloadImg.onload = () => {
+        // Image is fully loaded in memory, now swap it
+        cardImage.src = newImageSrc;
+        cardImage.alt = 'Baseball card';
+
+        // Use requestAnimationFrame to ensure blur is rendered before showing
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            cardImage.style.opacity = '1';
+          });
+        });
+      };
+      preloadImg.src = newImageSrc;
+    }
+
+    // Update counters
+    this.updateGuessCounters(round, Guess.state.totalPoints);
+
+    // Reset attempts indicator
+    this.updateAttemptsIndicator(attemptsRemaining);
+
+    // Clear input fields
+    document.getElementById('year-input').value = '';
+    document.getElementById('player-name-input').value = '';
+
+    // Clear and hide feedback
+    const feedback = document.getElementById('guess-feedback');
+    feedback.style.display = 'none';
+    feedback.textContent = '';
+    feedback.className = 'guess-feedback';
+
+    // Focus on year input
+    setTimeout(() => {
+      document.getElementById('year-input').focus();
+    }, 100);
+  },
+
+  /**
+   * Update round and points counters
+   * @param {number} round - Current round (1-5)
+   * @param {number} points - Total points
+   */
+  updateGuessCounters(round, points) {
+    document.getElementById('guess-round-counter').textContent = `${round}/5`;
+    document.getElementById('guess-points-counter').textContent = points;
+  },
+
+  /**
+   * Update attempts indicator dots
+   * @param {number} remaining - Attempts remaining (0-3)
+   */
+  updateAttemptsIndicator(remaining) {
+    const dots = document.querySelectorAll('.attempt-dot');
+    dots.forEach((dot, index) => {
+      if (index < remaining) {
+        dot.classList.add('active');
+        dot.classList.remove('used');
+      } else {
+        dot.classList.remove('active');
+        dot.classList.add('used');
+      }
+    });
+  },
+
+  /**
+   * Update card blur amount
+   * @param {number} blurAmount - Blur amount in pixels
+   */
+  updateCardBlur(blurAmount) {
+    const cardImage = document.getElementById('guess-card-image');
+    cardImage.style.filter = `blur(${blurAmount}px)`;
+  },
+
+  /**
+   * Reveal card (remove blur)
+   */
+  revealCard() {
+    const cardImage = document.getElementById('guess-card-image');
+    cardImage.style.filter = 'blur(0px)';
+    cardImage.classList.add('revealed');
+  },
+
+  /**
+   * Show guess feedback message
+   * @param {Object} result - Guess result
+   */
+  showGuessFeedback(result) {
+    const feedback = document.getElementById('guess-feedback');
+    const {
+      nameMatch,
+      yearMatch,
+      nameCorrect,
+      yearCorrect,
+      namePointsThisAttempt,
+      yearPointsThisAttempt,
+      attemptsRemaining,
+      correctAnswer,
+      isRoundOver
+    } = result;
+
+    feedback.style.display = 'block';
+
+    // Both correct this attempt
+    if (nameMatch && yearMatch) {
+      const totalPts = namePointsThisAttempt + yearPointsThisAttempt;
+      feedback.className = 'guess-feedback correct';
+      feedback.innerHTML = `
+        <strong>✓ Both Correct!</strong><br>
+        +${totalPts} point${totalPts !== 1 ? 's' : ''} (Name: ${namePointsThisAttempt}, Year: ${yearPointsThisAttempt})
+      `;
+    }
+    // Name only correct this attempt
+    else if (nameMatch && !yearMatch) {
+      feedback.className = 'guess-feedback partial';
+      feedback.innerHTML = `
+        <strong>✓ Name Correct!</strong><br>
+        +${namePointsThisAttempt} point${namePointsThisAttempt !== 1 ? 's' : ''} - Now get the year!
+      `;
+    }
+    // Year only correct this attempt
+    else if (!nameMatch && yearMatch) {
+      feedback.className = 'guess-feedback partial';
+      feedback.innerHTML = `
+        <strong>✓ Year Correct!</strong><br>
+        +${yearPointsThisAttempt} point${yearPointsThisAttempt !== 1 ? 's' : ''} - Now get the name!
+      `;
+    }
+    // Round over (out of attempts)
+    else if (isRoundOver) {
+      feedback.className = 'guess-feedback incorrect';
+      const missing = [];
+      if (!nameCorrect) missing.push('Name');
+      if (!yearCorrect) missing.push('Year');
+      feedback.innerHTML = `
+        <strong>✗ Out of attempts</strong><br>
+        Answer: ${correctAnswer.playerName} (${correctAnswer.year})
+      `;
+    }
+    // Already have name, need year
+    else if (nameCorrect && !yearCorrect) {
+      feedback.className = 'guess-feedback incorrect';
+      feedback.innerHTML = `
+        <strong>✗ Wrong year</strong><br>
+        ${attemptsRemaining} attempt${attemptsRemaining !== 1 ? 's' : ''} remaining
+      `;
+    }
+    // Already have year, need name
+    else if (yearCorrect && !nameCorrect) {
+      feedback.className = 'guess-feedback incorrect';
+      feedback.innerHTML = `
+        <strong>✗ Wrong name</strong><br>
+        ${attemptsRemaining} attempt${attemptsRemaining !== 1 ? 's' : ''} remaining
+      `;
+    }
+    // Both wrong
+    else {
+      feedback.className = 'guess-feedback incorrect';
+      feedback.innerHTML = `
+        <strong>✗ Both incorrect</strong><br>
+        ${attemptsRemaining} attempt${attemptsRemaining !== 1 ? 's' : ''} remaining
+      `;
+    }
+  },
+
+  /**
+   * Show guess results screen
+   * @param {Object} data - Results data
+   */
+  showGuessResults(data) {
+    const { totalPoints, maxPoints, roundHistory, isNewRecord } = data;
+
+    // Update trophy based on score (out of 30)
+    const trophy = document.getElementById('guess-trophy');
+    if (totalPoints >= 26) {
+      trophy.textContent = '🏆';
+    } else if (totalPoints >= 20) {
+      trophy.textContent = '🥈';
+    } else if (totalPoints >= 14) {
+      trophy.textContent = '🥉';
+    } else {
+      trophy.textContent = '🎯';
+    }
+
+    // Update score
+    document.getElementById('guess-final-score').textContent = `${totalPoints}/${maxPoints}`;
+
+    // Show/hide new record badge
+    const newRecordBadge = document.getElementById('guess-new-record');
+    newRecordBadge.style.display = isNewRecord ? 'block' : 'none';
+
+    // Populate round summary
+    const summaryList = document.getElementById('guess-round-summary-list');
+    summaryList.innerHTML = '';
+
+    roundHistory.forEach(round => {
+      const roundDiv = document.createElement('div');
+      const bothCorrect = round.nameCorrect && round.yearCorrect;
+      const someCorrect = round.nameCorrect || round.yearCorrect;
+      roundDiv.className = `round-summary-item ${bothCorrect ? 'correct' : someCorrect ? 'partial' : 'incorrect'}`;
+
+      const roundLabel = document.createElement('div');
+      roundLabel.className = 'round-label';
+
+      // Build status text with breakdown
+      let status;
+      if (round.totalPointsEarned > 0) {
+        const breakdown = `Name: ${round.namePointsEarned}, Year: ${round.yearPointsEarned}`;
+        status = `${bothCorrect ? '✓' : '◐'} +${round.totalPointsEarned} pts (${breakdown})`;
+      } else {
+        status = '✗ 0 points';
+      }
+      roundLabel.textContent = `Round ${round.round}: ${status}`;
+
+      const cardInfo = document.createElement('div');
+      cardInfo.className = 'round-cards';
+      cardInfo.textContent = `${round.card.playerName} (${round.card.year})`;
+
+      roundDiv.appendChild(roundLabel);
+      roundDiv.appendChild(cardInfo);
+      summaryList.appendChild(roundDiv);
+    });
+
+    this.showScreen('guess-results');
+  },
+
+  /**
+   * Update guess high scores display on menu
+   */
+  updateGuessHighScores() {
+    const score = HighScores.get('guess');
+    const element = document.getElementById('high-score-guess');
+    if (element) {
+      element.textContent = score ? `${score}/30` : '--';
+    }
   }
 };

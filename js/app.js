@@ -22,6 +22,7 @@ const App = {
     // Update high scores display
     UI.updateHighScores();
     UI.updateValuationHighScores();
+    UI.updateGuessHighScores();
 
     // Show mobile hint
     UI.updateMobileHint();
@@ -116,6 +117,9 @@ const App = {
         } else if (game === 'valuation') {
           UI.updateValuationHighScores();
           UI.showScreen('valuation-menu');
+        } else if (game === 'guess') {
+          UI.updateGuessHighScores();
+          UI.showScreen('guess-menu');
         }
       });
     });
@@ -131,6 +135,13 @@ const App = {
     const valuationBackBtn = document.getElementById('valuation-back-btn');
     if (valuationBackBtn) {
       valuationBackBtn.addEventListener('click', () => {
+        UI.showScreen('game-selector');
+      });
+    }
+
+    const guessBackBtn = document.getElementById('guess-back-btn');
+    if (guessBackBtn) {
+      guessBackBtn.addEventListener('click', () => {
         UI.showScreen('game-selector');
       });
     }
@@ -214,6 +225,72 @@ const App = {
       valuationChangeModeBtn.addEventListener('click', () => {
         UI.updateValuationHighScores();
         UI.showScreen('valuation-menu');
+      });
+    }
+
+    // ==== GUESS GAME EVENT LISTENERS ====
+
+    // Start guess game button
+    const startGuessBtn = document.getElementById('start-guess-btn');
+    if (startGuessBtn) {
+      startGuessBtn.addEventListener('click', () => {
+        this.startGuessGame();
+      });
+    }
+
+    // Guess game back button
+    const guessGameBackBtn = document.getElementById('guess-game-back-btn');
+    if (guessGameBackBtn) {
+      guessGameBackBtn.addEventListener('click', () => {
+        Guess.reset();
+        UI.updateGuessHighScores();
+        UI.showScreen('guess-menu');
+      });
+    }
+
+    // Submit guess button
+    const submitGuessBtn = document.getElementById('submit-guess-btn');
+    if (submitGuessBtn) {
+      submitGuessBtn.addEventListener('click', () => {
+        this.handleGuessSubmit();
+      });
+    }
+
+    // Enter key to submit guess
+    const playerNameInput = document.getElementById('player-name-input');
+    const yearInput = document.getElementById('year-input');
+
+    if (playerNameInput) {
+      playerNameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.handleGuessSubmit();
+        }
+      });
+    }
+
+    if (yearInput) {
+      yearInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.handleGuessSubmit();
+        }
+      });
+    }
+
+    // Guess results buttons
+    const guessPlayAgainBtn = document.getElementById('guess-play-again-btn');
+    if (guessPlayAgainBtn) {
+      guessPlayAgainBtn.addEventListener('click', () => {
+        this.startGuessGame();
+      });
+    }
+
+    const guessChangeModeBtn = document.getElementById('guess-change-mode-btn');
+    if (guessChangeModeBtn) {
+      guessChangeModeBtn.addEventListener('click', () => {
+        UI.updateGuessHighScores();
+        UI.showScreen('guess-menu');
       });
     }
   },
@@ -456,6 +533,86 @@ const App = {
     const isNewRecord = HighScores.save('valuation', results.mode, results.score);
 
     UI.showValuationResults({
+      ...results,
+      isNewRecord
+    });
+  },
+
+  // ===== GUESS GAME METHODS =====
+
+  /**
+   * Start a new guess game
+   */
+  async startGuessGame() {
+    const roundData = await Guess.init();
+    UI.renderGuessRound(roundData);
+    UI.showScreen('guess-game');
+  },
+
+  /**
+   * Handle guess submission
+   */
+  handleGuessSubmit() {
+    const playerName = document.getElementById('player-name-input').value;
+    const year = document.getElementById('year-input').value;
+
+    // Validate inputs
+    if (!playerName.trim() || !year) {
+      const feedback = document.getElementById('guess-feedback');
+      feedback.style.display = 'block';
+      feedback.className = 'guess-feedback incorrect';
+      feedback.innerHTML = '<strong>⚠ Please enter both player name and year</strong>';
+      return;
+    }
+
+    const result = Guess.submitGuess(playerName, year);
+
+    if (result.action === 'ignored') {
+      return;
+    }
+
+    this.handleGuessResult(result);
+  },
+
+  /**
+   * Handle guess result
+   * @param {Object} result - Result from Guess module
+   */
+  handleGuessResult(result) {
+    // Update UI counters
+    UI.updateGuessCounters(result.round + 1, result.totalPoints);
+
+    // Show feedback
+    UI.showGuessFeedback(result);
+
+    if (result.isCorrect || result.isRoundOver) {
+      // Reveal the card
+      UI.revealCard();
+
+      // Wait 2.5s, then next round or results
+      setTimeout(() => {
+        if (result.isGameOver) {
+          this.handleGuessComplete();
+        } else {
+          const nextRound = Guess.setupRound();
+          UI.renderGuessRound(nextRound);
+        }
+      }, 2500);
+    } else {
+      // Update for next attempt
+      UI.updateAttemptsIndicator(result.attemptsRemaining);
+      UI.updateCardBlur(Guess.getBlurAmount());
+    }
+  },
+
+  /**
+   * Handle guess game completion
+   */
+  handleGuessComplete() {
+    const results = Guess.getResults();
+    const isNewRecord = HighScores.save('guess', null, results.totalPoints);
+
+    UI.showGuessResults({
       ...results,
       isNewRecord
     });

@@ -1175,6 +1175,10 @@ h1, h2, h3 {
   border-left-color: var(--success-color);
 }
 
+.round-summary-item.partial {
+  border-left-color: #ff9800;
+}
+
 .round-summary-item.incorrect {
   border-left-color: #f44336;
 }
@@ -1236,5 +1240,309 @@ h1, h2, h3 {
 @media (min-width: 768px) {
   .two-card-area {
     gap: 60px;
+  }
+}
+
+/* ===== GUESS GAME STYLES ===== */
+
+/* Guess Menu Screen */
+#guess-menu-screen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--surface-color) 100%);
+}
+
+.game-info-text {
+  background: var(--surface-color);
+  padding: 20px;
+  border-radius: 8px;
+  border: 2px solid var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.game-info-text p {
+  color: var(--text-primary);
+  margin: 8px 0;
+  font-size: 0.95rem;
+}
+
+.start-game-btn {
+  width: 100%;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: var(--text-primary);
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.start-game-btn:hover {
+  background: linear-gradient(135deg, var(--primary-light), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 213, 79, 0.3);
+}
+
+/* Guess Game Screen */
+#guess-game-screen {
+  flex-direction: column;
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--surface-color) 100%);
+}
+
+.guess-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+  padding-top: calc(var(--header-height) + 20px);
+  overflow-y: auto;
+}
+
+.guess-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.guess-card-display {
+  width: 300px;
+  max-width: 90vw;
+  aspect-ratio: 5/7;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  background: var(--surface-color);
+}
+
+.blurred-card {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(20px);
+  transition: filter 0.5s ease-in-out, opacity 0.2s ease-in-out;
+}
+
+.blurred-card.revealed {
+  filter: blur(0px);
+}
+
+/* Attempts Indicator */
+.attempts-indicator {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.attempt-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 213, 79, 0.4);
+}
+
+.attempt-dot.used {
+  background: var(--text-secondary);
+  opacity: 0.3;
+  box-shadow: none;
+}
+
+/* Input Area */
+.guess-input-area {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.instruction {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 5px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.input-group input {
+  padding: 12px 16px;
+  font-size: 1rem;
+  background: var(--surface-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  font-family: inherit;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(255, 213, 79, 0.1);
+}
+
+.input-group input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+/* Chrome, Safari, Edge, Opera - Remove number input spinners */
+.input-group input::-webkit-outer-spin-button,
+.input-group input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox - Remove number input spinners */
+.input-group input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.submit-btn {
+  padding: 14px 30px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: var(--text-primary);
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background: linear-gradient(135deg, var(--primary-light), var(--accent-color));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 213, 79, 0.3);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Guess Feedback */
+.guess-feedback {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  animation: slideIn 0.3s ease;
+  border: 2px solid;
+  display: none;
+}
+
+.guess-feedback.correct {
+  background: rgba(76, 175, 80, 0.15);
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+
+.guess-feedback.partial {
+  background: rgba(255, 152, 0, 0.15);
+  border-color: #ff9800;
+  color: #ff9800;
+}
+
+.guess-feedback.incorrect {
+  background: rgba(244, 67, 54, 0.15);
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.guess-feedback strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1.05rem;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Guess Results Screen */
+#guess-results-screen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--surface-color) 100%);
+  overflow-y: auto;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .guess-card-display {
+    width: 250px;
+  }
+
+  .guess-main {
+    gap: 20px;
+    padding: 15px;
+    padding-top: calc(var(--header-height) + 15px);
+  }
+
+  .guess-input-area {
+    max-width: 100%;
+  }
+
+  .game-info-text {
+    padding: 15px;
+  }
+
+  .game-info-text p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .guess-card-display {
+    width: 220px;
+  }
+
+  .attempt-dot {
+    width: 14px;
+    height: 14px;
+  }
+
+  .input-group input {
+    font-size: 0.95rem;
+    padding: 10px 14px;
+  }
+
+  .submit-btn {
+    padding: 12px 24px;
+    font-size: 0.95rem;
   }
 }

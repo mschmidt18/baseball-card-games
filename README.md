@@ -1,27 +1,44 @@
-# Vintage Baseball Card Match
+# Vintage Baseball Card Games
 
-A mobile-first memory matching game featuring the 30 most valuable baseball cards of all time. Test your memory and learn about baseball history with iconic cards including the legendary T206 Honus Wagner, Mickey Mantle's 1952 Topps rookie, and more.
+A mobile-first game platform featuring the 30 most valuable baseball cards of all time. Test your memory, valuation knowledge, and card identification skills with three unique game modes. Learn about baseball history with iconic cards including the legendary T206 Honus Wagner, Mickey Mantle's 1952 Topps rookie, and more.
 
 ![Game Preview](https://img.shields.io/badge/Status-Complete-success)
 ![Technology](https://img.shields.io/badge/Tech-Vanilla%20JS-yellow)
 ![Mobile First](https://img.shields.io/badge/Design-Mobile%20First-blue)
 
+## Game Modes
+
+### 1. Matching Game 🃏
+Classic memory matching with three difficulty levels:
+- **Easy**: 10 cards (20 tiles)
+- **Medium**: 20 cards (40 tiles)
+- **Expert**: 30 cards (60 tiles)
+- **Turn-Based Scoring** - Lower scores are better!
+
+### 2. Valuation Game 💰
+Test your knowledge of card values with three modes:
+- **3-Card Sort**: Order 3 cards from most to least valuable (5 rounds)
+- **2-Card Pick**: Choose the more valuable card (5 rounds)
+- **Value Guess**: Multiple choice valuation quiz (5 rounds)
+
+### 3. Guess the Card 🎯
+Identify blurred baseball cards:
+- **5 rounds** per game, 3 attempts per card
+- Progressive blur reduction (20px → 10px → 5px → 0px)
+- **Partial scoring**: Name and year scored independently
+  - 3 points for 1st attempt, 2 points for 2nd, 1 point for 3rd
+  - Maximum 30 points per game (6 points per round)
+- Fuzzy name matching accepts variations
+
 ## Features
 
-- **Three Difficulty Levels**
-  - Easy: 10 cards (20 tiles)
-  - Medium: 20 cards (40 tiles)
-  - Expert: 30 cards (60 tiles)
+- **High Score Tracking** - Persistent high scores for all game modes using localStorage
 
-- **Turn-Based Scoring** - Lower scores are better! Challenge yourself to match all pairs in the fewest turns possible.
+- **Smooth Animations** - CSS 3D card flip effects with match celebration animations
 
-- **High Score Tracking** - Persistent high scores for each difficulty level using localStorage.
+- **Responsive Design** - Optimized for mobile, tablet, and desktop with adaptive grid layouts
 
-- **Smooth Animations** - CSS 3D card flip effects with match celebration animations.
-
-- **Responsive Design** - Optimized for mobile, tablet, and desktop with adaptive grid layouts.
-
-- **Educational Content** - Click on matched cards in the victory screen to learn about each card's history, value, and significance.
+- **Educational Content** - Click on matched cards to learn about each card's history, value, and significance
 
 - **30 Authentic Cards** - Features real vintage baseball cards including:
   - 1909 T206 Honus Wagner ($8M)
@@ -41,20 +58,23 @@ A mobile-first memory matching game featuring the 30 most valuable baseball card
 
 ```
 baseballcard-matching/
-├── index.html              # Main HTML file
+├── index.html              # Main HTML file with all game screens
 ├── css/
 │   └── styles.css          # All styles (reset, layout, animations, responsive)
 ├── js/
-│   ├── app.js              # Application controller
+│   ├── app.js              # Application controller for all games
 │   ├── cards.js            # Card data management
-│   ├── game.js             # Game logic and high scores
+│   ├── game.js             # Matching game logic and high scores
+│   ├── valuation.js        # Valuation game module
+│   ├── guess.js            # Guess the Card game module
 │   └── ui.js               # DOM manipulation and rendering
 ├── data/
 │   └── cards.json          # Card metadata (30 cards)
 ├── images/
 │   ├── cards/              # 30 card front images
 │   └── card-back.svg       # Vintage card back design
-└── README.md
+├── README.md
+└── CLAUDE.md               # Developer guidance for Claude Code
 ```
 
 ## How to Run
@@ -81,11 +101,27 @@ Since this is a static site with no build step, you can use any static file serv
 
 ## How to Play
 
+### Matching Game
 1. **Select Difficulty** - Choose Easy, Medium, or Expert mode
 2. **Click Cards** - Click any card to flip it over and reveal the baseball card
 3. **Find Matches** - Click a second card to find its matching pair
 4. **Match All Pairs** - Continue until all cards are matched
 5. **Check Your Score** - Your score is the number of turns taken (lower is better!)
+
+### Valuation Game
+1. **Select Mode** - Choose 3-Card Sort, 2-Card Pick, or Value Guess
+2. **Compare Cards** - View card images and details
+3. **Make Your Choice** - Sort, pick, or select the correct value
+4. **Complete 5 Rounds** - Each correct answer earns 1 point
+5. **Check Your Score** - Maximum 5 points per game
+
+### Guess the Card
+1. **Start Game** - Begin a 5-round identification challenge
+2. **View Blurred Card** - See a heavily blurred baseball card image
+3. **Enter Guess** - Type the year and player name
+4. **Get Feedback** - Partial credit for correct name or year
+5. **Progressive Clarity** - Blur reduces after each wrong guess
+6. **Check Your Score** - Maximum 30 points (6 per round)
 
 ## Game Controls
 

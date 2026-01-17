@@ -187,7 +187,7 @@ const HighScores = {
       // Migrate old format if needed
       return this.migrateScores(scores);
     } catch {
-      return { matching: {}, valuation: {} };
+      return { matching: {}, valuation: {}, guess: null };
     }
   },
 
@@ -221,7 +221,7 @@ const HighScores = {
 
   /**
    * Get high score for specific game and difficulty
-   * @param {string} gameType - 'matching' or 'valuation' (or cardCount for backwards compat)
+   * @param {string} gameType - 'matching', 'valuation', or 'guess' (or cardCount for backwards compat)
    * @param {string|number} difficulty - Difficulty level or mode
    * @returns {number|null} High score or null
    */
@@ -232,6 +232,12 @@ const HighScores = {
       return scores.matching?.[gameType] || null;
     }
 
+    // Guess game: single score value
+    if (gameType === 'guess') {
+      const scores = this.getAll();
+      return scores.guess || null;
+    }
+
     // New format: get('matching', 10) or get('valuation', '3-card')
     const scores = this.getAll();
     return scores[gameType]?.[difficulty] || null;
@@ -239,7 +245,7 @@ const HighScores = {
 
   /**
    * Save new high score if better than existing
-   * @param {string} gameType - 'matching' or 'valuation' (or cardCount for backwards compat)
+   * @param {string} gameType - 'matching', 'valuation', or 'guess' (or cardCount for backwards compat)
    * @param {string|number} difficulty - Difficulty level or mode (or turns for backwards compat)
    * @param {number} score - Score to save (optional for backwards compat)
    * @returns {boolean} True if new record
@@ -256,6 +262,24 @@ const HighScores = {
       if (!currentBest || turns < currentBest) {
         if (!scores.matching) scores.matching = {};
         scores.matching[cardCount] = turns;
+        try {
+          localStorage.setItem(this.storageKey, JSON.stringify(scores));
+          return true;
+        } catch {
+          return false;
+        }
+      }
+      return false;
+    }
+
+    // Guess game: single score value, higher is better
+    if (gameType === 'guess') {
+      const scores = this.getAll();
+      const currentBest = scores.guess;
+
+      // Higher is better for guess (0-15)
+      if (!currentBest || score > currentBest) {
+        scores.guess = score;
         try {
           localStorage.setItem(this.storageKey, JSON.stringify(scores));
           return true;

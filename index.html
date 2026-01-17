@@ -27,6 +27,11 @@
           <span class="game-tile-name">Valuation</span>
           <span class="game-tile-desc">Know your values</span>
         </button>
+        <button class="game-tile" data-game="guess">
+          <div class="game-tile-icon">🎯</div>
+          <span class="game-tile-name">Guess the Card</span>
+          <span class="game-tile-desc">Identify blurred cards</span>
+        </button>
       </div>
     </div>
   </div>
@@ -254,6 +259,106 @@
     </div>
   </div>
 
+  <!-- Guess Menu Screen -->
+  <div id="guess-menu-screen" class="screen">
+    <div class="menu-container">
+      <button class="back-to-selector-btn" id="guess-back-btn">← Games</button>
+      <h1 class="game-title">Guess the Card</h1>
+      <p class="game-subtitle">Identify vintage baseball cards from blurred images</p>
+
+      <div class="difficulty-section">
+        <h2>Game Info</h2>
+        <div class="game-info-text">
+          <p>5 rounds • 3 attempts per card</p>
+          <p>Name & Year scored separately</p>
+          <p>3 pts (1st try) • 2 pts (2nd) • 1 pt (3rd)</p>
+          <p>Maximum score: 30 points</p>
+        </div>
+        <button class="start-game-btn" id="start-guess-btn">Start Game</button>
+      </div>
+
+      <div class="high-scores-section">
+        <h3>High Score</h3>
+        <div class="high-scores">
+          <div class="score-item">
+            <span class="score-label">Best:</span>
+            <span class="score-value" id="high-score-guess">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guess Game Screen -->
+  <div id="guess-game-screen" class="screen">
+    <header class="game-header">
+      <button class="back-btn" id="guess-game-back-btn">Menu</button>
+      <div class="score-display">
+        <span class="score-label">ROUND</span>
+        <span class="score-number" id="guess-round-counter">1/5</span>
+      </div>
+      <div class="score-display">
+        <span class="score-label">POINTS</span>
+        <span class="score-number" id="guess-points-counter">0</span>
+      </div>
+    </header>
+
+    <main class="guess-main">
+      <div class="guess-card-container">
+        <div class="guess-card-display">
+          <img id="guess-card-image" src="" alt="" class="blurred-card">
+        </div>
+        <div class="attempts-indicator" id="attempts-indicator">
+          <span class="attempt-dot active"></span>
+          <span class="attempt-dot active"></span>
+          <span class="attempt-dot active"></span>
+        </div>
+      </div>
+
+      <div class="guess-input-area">
+        <p class="instruction">What year and who is this player?</p>
+        <div class="input-group">
+          <label for="year-input">Year</label>
+          <input type="number" id="year-input" placeholder="e.g., 1909" min="1900" max="2023">
+        </div>
+        <div class="input-group">
+          <label for="player-name-input">Player Name</label>
+          <input type="text" id="player-name-input" placeholder="e.g., Honus Wagner" autocomplete="off">
+        </div>
+        <button class="submit-btn" id="submit-guess-btn">Submit Guess</button>
+        <div class="guess-feedback" id="guess-feedback"></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Guess Results Screen -->
+  <div id="guess-results-screen" class="screen">
+    <div class="victory-container">
+      <div class="trophy-icon" id="guess-trophy">🎯</div>
+      <h2 class="victory-title">Game Complete!</h2>
+
+      <div class="final-score">
+        <span class="final-score-label">Final Score</span>
+        <span class="final-score-number" id="guess-final-score">0/15</span>
+        <span class="final-score-unit">points</span>
+      </div>
+
+      <div class="new-record" id="guess-new-record" style="display: none;">
+        <span>New High Score!</span>
+      </div>
+
+      <div class="matched-cards-section">
+        <h3>Round Summary</h3>
+        <div class="round-summary-list" id="guess-round-summary-list"></div>
+      </div>
+
+      <div class="victory-buttons">
+        <button class="play-again-btn" id="guess-play-again-btn">Play Again</button>
+        <button class="change-difficulty-btn" id="guess-change-mode-btn">Back to Menu</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Card Info Modal -->
   <div id="card-info-modal" class="modal">
     <div class="modal-content">
@@ -271,6 +376,7 @@
   <script src="js/cards.js"></script>
   <script src="js/game.js"></script>
   <script src="js/valuation.js"></script>
+  <script src="js/guess.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
 </body>
